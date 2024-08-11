@@ -1,11 +1,11 @@
 <script setup>
     import{useOrderStore} from '@/stores/order'
-    import { useRoute } from 'vue-router';
+    import { useRouter, useRoute,RouterLink } from 'vue-router';
     import { onMounted, reactive } from 'vue';
-    import { RouterLink } from 'vue-router';
 
     const orderStore = useOrderStore()
     const route = useRoute()
+    const router = useRouter()
     const order = reactive({
         name:'',
         tableNumber:-1,
@@ -19,6 +19,15 @@
         order.orderList = orderStore.orderTaber(route.params.id)[0].order
     })
 
+
+    const checkOutHandle = ()=>{
+        router.push({
+            name:'checkout',
+            params:{
+                id: order.tableNumber
+            }
+        })
+    }
 
 </script>
 <template>
@@ -43,7 +52,7 @@
                 />
                 <p class="ml-2">กลับไปหน้าเมนู</p>
             </RouterLink>
-            <button class="btn btn-outline">
+            <button @click="checkOutHandle()" class="btn btn-outline">
                 <p class="mr-2">จ่ายเงิน</p>
                 <IconList 
                     icontype = 'rightarrow'
