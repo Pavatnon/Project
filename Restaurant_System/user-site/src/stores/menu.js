@@ -116,12 +116,26 @@ export const useMenuStore = defineStore('menu',{
         stock:10,
         id:'C4'
       }
-    ]
+    ],
   }),
   getters:{
-    fillerMenu: (state) => (selectedType) => {
-      return state.menulist.filter(menu => menu.type === selectedType)
-    }
+    fillerMenu: (state) => (selectedType, id) => {    
+      let menuSearch = state.menulist
+      if (selectedType === 'รายการอาหารทั้งหมด') {
+        menuSearch = state.menulist
+        if(id !== '' && id){
+          menuSearch = menuSearch.filter((item) => item.id === id)
+        }
+        
+      }
+      else if(selectedType !== 'รายการอาหารทั้งหมด'){
+        menuSearch = state.menulist.filter((menu) => menu.type === selectedType)
+        if(id !== '' && id){
+          menuSearch = menuSearch.filter((item) => item.id === id)
+        }
+      }
+      return menuSearch
+    },
   }
   
 })

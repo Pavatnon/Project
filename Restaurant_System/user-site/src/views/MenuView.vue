@@ -11,22 +11,13 @@
 
     const route = useRoute()
 
-    const menuTypeSelected = ref('รายการอาหารทั้งหมด')
 
-    const showMenu = computed(()=>{
-        let getMenu = []
-        if(menuTypeSelected.value === 'รายการอาหารทั้งหมด'){
-            getMenu = menuStore.menulist
-        }else{
-            getMenu = menuStore.fillerMenu(menuTypeSelected.value)
-        }
-        return getMenu
-    })
+    let showMenu =[]
 
 
-    watch(() => route.query.type, (newQuery) => {
-        if(newQuery){
-            menuTypeSelected.value = newQuery
+    watch(() => [route.query.type, route.query.id], (newQuery) => {
+        if(newQuery[0] || newQuery[1]){
+            showMenu = menuStore.fillerMenu(newQuery[0],newQuery[1])
         }else{
             menuTypeSelected.value = 'รายการอาหารทั้งหมด'
         }

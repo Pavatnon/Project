@@ -1,6 +1,10 @@
 <script setup>
+    import {useMenuStore} from '@/stores/menu'
+    
     import { useRoute, useRouter, RouterLink } from 'vue-router'
-    import { onMounted } from 'vue';
+    import { onMounted, ref } from 'vue';
+
+    const menuStore = useMenuStore()
 
     const router = useRouter()
     const route = useRoute()
@@ -24,12 +28,20 @@
         }
     ]
 
+    const searchText = ref('')
+
     onMounted(()=>{
         router.push({query:{type:'รายการอาหารทั้งหมด'}})
     })
 
     const selectType = (type) =>{
         router.push({query:{type:type}})
+    }
+    const searchHanddle = () =>{
+       router.push({query:{
+            type:route.query.type,
+            id:searchText.value
+        }})
     }
 
     
@@ -48,16 +60,34 @@
                 <div class="text-2xl font-bold">
                     Restuarant
                 </div>
-                <!-- cartoption -->
-                <div>
-                    <RouterLink :to="{name:'cart'}" class="btn btn-ghost">
-                        <IconList icontype="cart" color="black" size="25" />
-                    </RouterLink>
+                <div class="flex">
+                    <!-- searchicon -->
+                    <div>
+                        <button class="btn btn-ghost">
+                            <IconList icontype='search' color='black' size='25' />
+                        </button>
+                    </div>
+                    <!-- cartoption -->
+                    <div>
+                        <RouterLink :to="{name:'cart'}" class="btn btn-ghost">
+                            <IconList icontype="cart" color="black" size="25" />
+                        </RouterLink>
+                    </div>
                 </div>
             </div>
             <!-- sidebar -->
             <div class="fixed z-10 top-0 right-0 hidden lg:block">
                 <div class="flex w-full bg-base-200 px-8 items-center gap-4">
+                    <label class="input input-bordered flex items-center gap-2">
+                        <input v-model="searchText" type="text" class="grow" placeholder="Search" @keyup="searchHanddle()"/>
+                        <button @click="searchHanddle()" class="btn btn-ghost">
+                            <IconList 
+                                icontype="search"
+                                color="black"
+                                size="25"
+                            />    
+                        </button>
+                    </label>
                     <RouterLink :to="{name:'cart'}" class="btn btn-ghost">
                         <IconList icontype="cart" color="black" size="25" />
                     </RouterLink>
@@ -85,12 +115,13 @@
                         <summary class="text-xl">{{ menu.type }}</summary>
                         <ul class="bg-base-100 rounded-box w-64 p-2">
                             <li v-for="submenu in menu.subtype" :key="submenu">
-                                <a @click="selectType(submenu)" class="text-lg" :class="route.query.type === submenu? 'active': ''">{{ submenu }}</a>
+                                <a @click="selectType(submenu)" class="text-lg"
+                                    :class="route.query.type === submenu? 'active': ''">{{ submenu }}</a>
                             </li>
                         </ul>
                     </details>
                     <div v-if="!menu.subtype" class="text-xl" :class="route.query.type === menu.type ?'active': ''">
-                        <summary @click="selectType('รายการอาหารทั้งหมด')" >{{ menu.type }}</summary>
+                        <summary @click="selectType('รายการอาหารทั้งหมด')">{{ menu.type }}</summary>
                     </div>
                 </li>
             </ul>
