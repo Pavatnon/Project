@@ -22,6 +22,7 @@ export const useOrderStore = defineStore('oder',{
             }
         },
         getOrder(cartData){
+            this.loadOrder()
             const orderBody = {}
             orderBody.name = cartData.name
             orderBody.todo = cartData.todo,

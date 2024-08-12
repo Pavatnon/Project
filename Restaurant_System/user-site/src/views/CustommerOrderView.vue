@@ -1,9 +1,13 @@
 <script setup>
     import{useOrderStore} from '@/stores/order'
+    import{useCheckOutStore} from '@/stores/checkout'
+
     import { useRouter, useRoute,RouterLink } from 'vue-router';
     import { onMounted, reactive } from 'vue';
 
     const orderStore = useOrderStore()
+    const checkoutStore = useCheckOutStore()
+
     const route = useRoute()
     const router = useRouter()
     const order = reactive({
@@ -21,6 +25,7 @@
 
 
     const checkOutHandle = ()=>{
+        checkoutStore.getCheckout(order)
         router.push({
             name:'checkout',
             params:{
