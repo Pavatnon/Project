@@ -29,6 +29,7 @@
     ]
 
     const searchText = ref('')
+    const showSearchbar = ref(false)
 
     onMounted(()=>{
         router.push({query:{type:'รายการอาหารทั้งหมด'}})
@@ -37,11 +38,14 @@
     const selectType = (type) =>{
         router.push({query:{type:type}})
     }
-    const searchHanddle = () =>{
+    const searchHanddle = (event) =>{
        router.push({query:{
             type:route.query.type,
             id:searchText.value
         }})
+        if(event.isTrusted){
+            showSearchbar.value = !showSearchbar.value
+        }
     }
 
     
@@ -57,13 +61,23 @@
                     <IconList icontype="menu" color="black" size="25" />
                 </label>
                 <!-- logo -->
-                <div class="text-2xl font-bold">
+                <div v-if="!showSearchbar" class="text-2xl font-bold">
                     Restuarant
                 </div>
-                <div class="flex">
+                <div class="flex mx-4">
                     <!-- searchicon -->
-                    <div>
-                        <button class="btn btn-ghost">
+                    <label v-if="showSearchbar" class="input input-bordered flex items-center gap-2">
+                        <input v-model="searchText" type="text" class="grow" placeholder="Search" @keyup="searchHanddle()"/>
+                        <button @click="searchHanddle($event)" class="btn btn-ghost" >
+                            <IconList 
+                                icontype="search"
+                                color="black"
+                                size="25"
+                            />    
+                        </button>
+                    </label>
+                    <div v-if="!showSearchbar">
+                        <button class="btn btn-ghost" @click="showSearchbar = !showSearchbar">
                             <IconList icontype='search' color='black' size='25' />
                         </button>
                     </div>

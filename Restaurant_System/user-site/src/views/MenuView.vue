@@ -19,7 +19,7 @@
         if(newQuery[0] || newQuery[1]){
             showMenu = menuStore.fillerMenu(newQuery[0],newQuery[1])
         }else{
-            menuTypeSelected.value = 'รายการอาหารทั้งหมด'
+            newQuery[0] = 'รายการอาหารทั้งหมด'
         }
     }, {immediate: true})
 
