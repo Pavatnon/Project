@@ -29,8 +29,10 @@ export const useOrderStore = defineStore('oder',{
             orderBody.tableNumber = cartData.number,
             orderBody.order = cartData.order
 
-            //loop add status
-            orderBody.order[0].status = 'รอดำเนินการ'
+            for (let i = 0; i < orderBody.order.length; i++) {
+                orderBody.order[i].status = 'รอดำเนินการ'
+                
+            }
 
             this.orderList.push(orderBody)
             localStorage.setItem('order-data', JSON.stringify(this.orderList))

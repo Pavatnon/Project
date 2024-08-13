@@ -59,7 +59,10 @@
             <div v-if="mode === 'orderview'" class="card-body items-center text-center">
                 <h2 class="card-title">{{ menu.name }}</h2>
                 <h2 class="card-title"> จำนวน: {{ menu.quantity }} ที่</h2>
-                <h2 class="card-title mb-4"> รวม: {{ menu.price *  menu.quantity}} THB</h2>
+                <h2 class="card-title"> รวม: {{ menu.price *  menu.quantity}} THB</h2>
+                <h2 class="card-title mb-4 badge badge-info gap-2 p-4 rounded-lg">
+                    {{ menu.status }}
+                </h2>
                 <div class="card-actions w-full">
                     <button class="btn btn-error w-full">ขอยกเลิกรายการ</button>
                 </div>

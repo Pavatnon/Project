@@ -19,7 +19,7 @@ const router = createRouter({
       name: 'order-select',
       component: () => import('@/views/CheckOrderView.vue')
     },
-    {
+    { 
       path: '/order/:id',
       name: 'order',
       component: () => import('@/views/CustommerOrderView.vue')
