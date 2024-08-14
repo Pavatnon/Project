@@ -36,6 +36,16 @@ const router = createRouter({
       name: 'menu',
       component: () => import('@/views/MenuPage/MenuView.vue')
     },
+    {
+      path: '/menulist/Add',
+      name: 'menu-add',
+      component: () => import('@/views/MenuPage/AddmenuView.vue')
+    },
+    {
+      path: '/menulist/:id',
+      name: 'menu-edit',
+      component: () => import('@/views/MenuPage/EditmenuView.vue')
+    },
 
     // orderPage
     {
