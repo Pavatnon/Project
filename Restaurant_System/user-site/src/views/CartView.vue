@@ -141,9 +141,11 @@
                         <IconList icontype="leftarrow" color="white" size="25" />
                         <p class="ml-4">กลับไปหน้าเมนู</p>
                     </RouterLink>
+                    <div class="flex">
+                        <div class="text-xl max-w-56 mx-auto my-5">ทั้งหมด: {{ cartStore.totalQuantity }} รายการ</div>
+                        <div class="text-xl max-w-56 mx-auto my-5">รวมราคา: {{ cartStore.totalPrice }}</div>
 
-
-                    <div class="text-xl max-w-56 mx-auto my-5">รวมราคา: {{ cartStore.totalPrice }}</div>
+                    </div>
 
 
                     <button @click="handleToOrderpage()" v-if="isValid" class="btn btn-active w-11/12 md:max-w-56 mx-auto">

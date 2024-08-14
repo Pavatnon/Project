@@ -1,10 +1,11 @@
 <script setup>
-    import {useMenuStore} from '@/stores/menu'
+    import {useCartStore} from '@/stores/cart'
     
     import { useRoute, useRouter, RouterLink } from 'vue-router'
     import { onMounted, ref } from 'vue';
 
-    const menuStore = useMenuStore()
+
+    const cartStore = useCartStore()
 
     const router = useRouter()
     const route = useRoute()
@@ -35,11 +36,11 @@
     ]
 
     const searchText = ref('')
-    const orderNumber = ref(-1)
     const showSearchbar = ref(false)
 
     onMounted(()=>{
         router.push({query:{type:'รายการอาหารทั้งหมด'}})
+        cartStore.loadCart()
     })
 
     const selectType = (type) =>{
@@ -87,7 +88,8 @@
                     </div>
                     <!-- cartoption -->
                     <div>
-                        <RouterLink :to="{name:'cart'}" class="btn btn-ghost">
+                        <RouterLink :to="{name:'cart'}" class="btn btn-ghost relative">
+                            <div v-if="cartStore.totalQuantity !== 0" class="bg-red-500 text-white absolute top-0 right-0 p-1 rounded-full">{{ cartStore.totalQuantity}}</div>
                             <IconList icontype="cart" color="black" size="25" />
                         </RouterLink>
                     </div>
@@ -103,7 +105,8 @@
                             <IconList icontype="search" color="black" size="25" />
                         </button>
                     </label>
-                    <RouterLink :to="{name:'cart'}" class="btn btn-ghost">
+                    <RouterLink :to="{name:'cart'}" class="btn btn-ghost relative">
+                        <div v-if="cartStore.totalQuantity !== 0" class="bg-red-500 text-white absolute top-0 right-0 p-1 rounded-full">{{ cartStore.totalQuantity}}</div>
                         <IconList icontype="cart" color="black" size="25" />
                     </RouterLink>
                     <div class="text-2xl font-bold">
