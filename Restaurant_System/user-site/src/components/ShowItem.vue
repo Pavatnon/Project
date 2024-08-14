@@ -60,10 +60,18 @@
                 <h2 class="card-title">{{ menu.name }}</h2>
                 <h2 class="card-title"> จำนวน: {{ menu.quantity }} ที่</h2>
                 <h2 class="card-title"> รวม: {{ menu.price *  menu.quantity}} THB</h2>
-                <h2 class="card-title mb-4 badge badge-info gap-2 p-4 rounded-lg">
+
+                <h2 v-if="menu.status === 'รอดำเนินการ'" class="card-title mb-4 badge  badge-warning gap-2 p-4 rounded-lg">
                     {{ menu.status }}
                 </h2>
-                <div class="card-actions w-full">
+                <h2 v-if="menu.status === 'กำลังทำ'" class="card-title mb-4 badge badge-info gap-2 p-4 rounded-lg">
+                    {{ menu.status }}
+                </h2>
+                <h2 v-if="menu.status === 'เสิร์ฟแล้ว'" class="card-title mb-4 badge badge-success gap-2 p-4 rounded-lg">
+                    {{ menu.status }}
+                </h2>
+
+                <div v-if="menu.status === 'รอดำเนินการ'" class="card-actions w-full">
                     <button class="btn btn-error w-full">ขอยกเลิกรายการ</button>
                 </div>
             </div>
