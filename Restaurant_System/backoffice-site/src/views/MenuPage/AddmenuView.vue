@@ -5,6 +5,7 @@
     
 
     const menuStore = useMenuOfficeStore()
+    const router = useRouter()
 
     const getmenuType = computed(()=>{
         return menuStore.menuType.filter(item => item.subtype)
@@ -53,6 +54,7 @@
 
     const addMenuHandle = (menuData) =>{
         menuStore.addMenuStore(menuData)
+        router.push({name:'menu'})
     }
 
 </script>
