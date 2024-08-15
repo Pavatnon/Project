@@ -4,8 +4,8 @@ import { defineStore } from 'pinia'
 export const useMenuStore = defineStore('menu',{
   state:()=>({
     menulist:[
-      // อาหารจานเดี่ยว
-      {
+       // อาหารจานเดี่ยว
+       {
         name:'กระเพรา',
         imgUrl:'https://fastly.picsum.photos/id/967/200/200.jpg?hmac=s5pdTpbIPeIbni0PAuHQQeuDPFrlAa6-FLJJvpYN1Os',
         price:100,
@@ -136,6 +136,6 @@ export const useMenuStore = defineStore('menu',{
       }
       return menuSearch
     },
-  }
+  },
   
 })

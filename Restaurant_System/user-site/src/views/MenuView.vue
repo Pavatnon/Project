@@ -1,6 +1,6 @@
 <script setup>
     import {useRoute} from 'vue-router'
-    import {ref, watch, computed} from 'vue';
+    import {watch} from 'vue';
     
     import {useMenuStore} from '@/stores/menu'
     import { useCartStore } from '@/stores/cart';
@@ -22,7 +22,6 @@
             newQuery[0] = 'รายการอาหารทั้งหมด'
         }
     }, {immediate: true})
-
 
     const addCart = (menu) =>{
         cartStore.addToCart(menu)
