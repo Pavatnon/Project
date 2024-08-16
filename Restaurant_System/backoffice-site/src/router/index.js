@@ -22,6 +22,21 @@ const router = createRouter({
       name: 'table',
       component: () => import('@/views/SeatPage/SeatView.vue')
     },
+    {
+      path: '/table/Add',
+      name: 'table-add',
+      component: () => import('@/views/SeatPage/AddSeatView.vue')
+    },
+    {
+      path: '/table/edit/:id',
+      name: 'table-edit',
+      component: () => import('@/views/SeatPage/EditSeatView.vue')
+    },
+    {
+      path: '/table/detail/:id',
+      name: 'table-detail',
+      component: () => import('@/views/SeatPage/DetailSeatView.vue')
+    },
 
     // EmployeePage
     {

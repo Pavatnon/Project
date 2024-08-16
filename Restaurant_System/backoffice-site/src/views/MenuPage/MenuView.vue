@@ -95,7 +95,7 @@
             <!-- option -->
             <div class="grid grid-cols-1 lg:grid-cols-3 my-10">
                 <div class="flex flex-row items-end">
-                    <RouterLink :to="{name:'menu-add'}" class="btn btn-primary">Add Menu</RouterLink>
+                    <RouterLink :to="{name:'menu-add'}" class="btn btn-primary">เพิ่มเมนู</RouterLink>
                 </div>
                 <div class="flex flex-col lg:flex-row gap-4 col-span-2">
                     <label class="form-control w-full max-w-xs">
@@ -119,7 +119,6 @@
             </div>
 
 
-            <TableShow :headerShow =  'tableHeader'/>
 
             <div class="overflow-x-auto">
                 <table class="table">
