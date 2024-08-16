@@ -4,6 +4,7 @@
     import { onMounted,ref, computed } from 'vue';
 
 
+
     const router = useRouter()
     const menuStore = useMenuOfficeStore()
 
@@ -118,14 +119,12 @@
             </div>
 
 
+            <TableShow :headerShow =  'tableHeader'/>
+
             <div class="overflow-x-auto">
                 <table class="table">
-                    <!-- head -->
-                    <thead>
-                        <tr class="text-center">
-                            <th v-for="header in tableHeader">{{ header }}</th>
-                        </tr>
-                    </thead>
+                    
+                    <TableShow :headerShow =  'tableHeader'/>
 
                     <tbody>
                         <tr v-for="menu, index in paginationShow" class="bg-base-100 text-center">
@@ -161,7 +160,11 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="flex justify-center mt-4">
+            </div>
+            
+            
+            <div>
+                <div class="flex justify-center mt-2">
                     <div class="join">
                         <button  @click="goToPreviousPage" :disabled="currentPage === 1" class="join-item btn">«</button>
                         <button class="join-item btn">{{ currentPage }}</button>
