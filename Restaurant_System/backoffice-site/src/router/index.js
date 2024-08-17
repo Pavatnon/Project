@@ -44,6 +44,16 @@ const router = createRouter({
       name: 'employee',
       component: () => import('@/views/EmployeePage/EmployeeView.vue')
     },
+    {
+      path: '/employee/resigter',
+      name: 'employee-add',
+      component: () => import('@/views/EmployeePage/AddEmployee.vue')
+    },
+    {
+      path: '/employee/detail/:id',
+      name: 'employee-detail',
+      component: () => import('@/views/EmployeePage/DetailEmployee.vue')
+    },
 
     // MenuPage
     {
