@@ -46,6 +46,7 @@
         editForm.value[3].field = employeeStore.employeeDetail.fullname
         editForm.value[4].field = employeeStore.employeeDetail.role
     })
+    //รอทำ validation
     watch(()=>[editForm.value[0].field, editForm.value[1].field,
                 editForm.value[2].field, editForm.value[3].field,
                 editForm.value[4].field], 

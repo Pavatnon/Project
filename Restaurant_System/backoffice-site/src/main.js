@@ -8,6 +8,7 @@ import router from './router'
 
 // maincomponent
 import TableShow from '@/components/TableShow.vue'
+import VueApexCharts from "vue3-apexcharts";
 // leyout
 import Leyout from '@/components/Leyout.vue'
 
@@ -23,5 +24,6 @@ app.component('TableShow',TableShow)
 
 app.use(createPinia())
 app.use(router)
+app.use(VueApexCharts);
 
 app.mount('#app')
