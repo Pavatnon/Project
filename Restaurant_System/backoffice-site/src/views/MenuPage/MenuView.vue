@@ -1,7 +1,8 @@
 <script setup>
     import {useMenuOfficeStore} from '@/stores/menu'
     import { useRouter,RouterLink } from 'vue-router';
-    import { onMounted,ref } from 'vue';
+    import { onMounted,ref, computed } from 'vue';
+
 
 
     const router = useRouter()
@@ -24,6 +25,10 @@
 
     const getsubtype = ref([])
 
+    // for pagination 
+    const itemsPerPage = ref(5)
+    const currentPage = ref(1)
+
     const selectorHander = (menutype) =>{
         if (menutype) {
             const getindex = menuStore.menuType.findIndex(menu => menu.type === menutype)
@@ -38,6 +43,30 @@
             }
         }
     }
+
+    const paginationShow = computed(()=>{
+        const getData = menuStore.filterMenuByType(menuTypeModel.value, menuSubtypeModel.value);
+        const start = (currentPage.value - 1) * itemsPerPage.value;
+        const end = start + itemsPerPage.value;
+        return getData.slice(start, end);
+    })
+
+    const totalPages = computed(() => {
+        const getData = menuStore.filterMenuByType(menuTypeModel.value, menuSubtypeModel.value);
+        return Math.ceil(getData.length / itemsPerPage.value);
+    });
+
+    const goToNextPage = () => {
+    if (currentPage.value < totalPages.value) {
+        currentPage.value++;
+    }
+    };
+
+    const goToPreviousPage = () => {
+    if (currentPage.value > 1) {
+        currentPage.value--;
+    }
+};
 
     onMounted(()=>{
         menuStore.loadMenuStore()
@@ -66,7 +95,7 @@
             <!-- option -->
             <div class="grid grid-cols-1 lg:grid-cols-3 my-10">
                 <div class="flex flex-row items-end">
-                    <RouterLink :to="{name:'menu-add'}" class="btn btn-primary">Add Menu</RouterLink>
+                    <RouterLink :to="{name:'menu-add'}" class="btn btn-primary">เพิ่มเมนู</RouterLink>
                 </div>
                 <div class="flex flex-col lg:flex-row gap-4 col-span-2">
                     <label class="form-control w-full max-w-xs">
@@ -90,19 +119,14 @@
             </div>
 
 
+
             <div class="overflow-x-auto">
                 <table class="table">
-                    <!-- head -->
-                    <thead>
-                        <tr class="text-center">
-                            <th v-for="header in tableHeader">{{ header }}</th>
-                        </tr>
-                    </thead>
+                    <TableShow :headerShow =  'tableHeader'/>
 
                     <tbody>
-                        <tr v-for="menu, index in menuStore.filterMenuByType(menuTypeModel,menuSubtypeModel)"
-                            class="bg-base-100 text-center">
-                            <th>{{ index+1 }}</th>
+                        <tr v-for="menu, index in paginationShow" class="bg-base-100 text-center">
+                            <th>{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
                             <td class="w-1/12 text-center">
                                 <img class="w-full" :src="menu.imgUrl">
                             </td>
@@ -110,11 +134,14 @@
                             <td>{{menu.price}}</td>
                             <td>
                                 <div class="dropdown dropdown-right dropdown-end">
-                                    <div tabindex="0" role="button" class="btn m-1" :class="menu.status === menuStore.menuStatusType[0]? 'bg-green-300': 'bg-red-300'">{{menu.status}}</div>
+                                    <div tabindex="0" role="button" class="btn m-1"
+                                        :class="menu.status === menuStore.menuStatusType[0]? 'bg-green-300': 'bg-red-300'">
+                                        {{menu.status}}</div>
                                     <ul tabindex="0"
                                         class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                                         <li v-for="statusType in menuStore.menuStatusType">
-                                            <a @click="menuStore.editStatusMenuStore(menu.name, statusType)">{{statusType}}</a>
+                                            <a
+                                                @click="menuStore.editStatusMenuStore(menu.name, statusType)">{{statusType}}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -124,17 +151,24 @@
                                 <div class="flex flex-row justify-center gap-1">
                                     <button @click="editMenuhande(menu.name)" class="btn btn-primary"> Edit</button>
                                     <button @click="deleteMenuHabdle(menu.name)" class="btn btn-outline btn-error">
-                                        <IconList
-                                            icontype ='trash'
-                                            color = 'red'
-                                            size = '20'
-                                        />
+                                        <IconList icontype='trash' color='red' size='20' />
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            
+            
+            <div>
+                <div class="flex justify-center mt-2">
+                    <div class="join">
+                        <button  @click="goToPreviousPage" :disabled="currentPage === 1" class="join-item btn">«</button>
+                        <button class="join-item btn">{{ currentPage }}</button>
+                        <button @click="goToNextPage" :disabled="currentPage === totalPages" class="join-item btn">»</button>
+                    </div>
+                </div>
             </div>
         </div>
 

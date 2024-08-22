@@ -22,12 +22,37 @@ const router = createRouter({
       name: 'table',
       component: () => import('@/views/SeatPage/SeatView.vue')
     },
+    {
+      path: '/table/Add',
+      name: 'table-add',
+      component: () => import('@/views/SeatPage/AddSeatView.vue')
+    },
+    {
+      path: '/table/edit/:id',
+      name: 'table-edit',
+      component: () => import('@/views/SeatPage/EditSeatView.vue')
+    },
+    {
+      path: '/table/detail/:id',
+      name: 'table-detail',
+      component: () => import('@/views/SeatPage/DetailSeatView.vue')
+    },
 
     // EmployeePage
     {
       path: '/employee',
       name: 'employee',
       component: () => import('@/views/EmployeePage/EmployeeView.vue')
+    },
+    {
+      path: '/employee/resigter',
+      name: 'employee-add',
+      component: () => import('@/views/EmployeePage/AddEmployee.vue')
+    },
+    {
+      path: '/employee/detail/:id',
+      name: 'employee-detail',
+      component: () => import('@/views/EmployeePage/DetailEmployee.vue')
     },
 
     // MenuPage
