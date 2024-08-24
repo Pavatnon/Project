@@ -1,9 +1,10 @@
 <script setup>
-import { ref,reactive,watch } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { ref,reactive,watch, onMounted } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+import {useServiceStore} from '@/stores/service'
 
 const router = useRouter()
-
+const serviceStore = useServiceStore()
 const passwordView = ref(false)
 
 let isValid = [false, false]
@@ -35,12 +36,27 @@ watch(()=>[loginData.username, loginData.password],(newdata) => {
         isValid[1] = true
     }
 },{immediate:true})
+onMounted(() => {
+    localStorage.removeItem('token')
+})
 
-const getLoginData = () =>{
-    console.log(loginData)
-    router.push({
-        name:'userdata'
-    })
+const getLoginData = async() =>{
+    const data = {
+        username: loginData.username,
+        password: loginData.password
+    }
+
+    await serviceStore.loginService(data)
+
+    if (serviceStore.role === 'admin') {
+        router.push({
+            name:'user-home'
+        })
+    }else{
+        router.push({
+            name:'user-home'
+        })
+    }
 }
 
 </script>

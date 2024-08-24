@@ -1,8 +1,10 @@
 <script setup>
 import { ref,reactive,watch } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
+import {useServiceStore} from '@/stores/service'
 
 const router = useRouter()
+const serviceStore = useServiceStore()
 const passwordView = ref(false)
 let isValid = [false, false, false]
 
@@ -48,12 +50,14 @@ watch(()=>[regisData.username, regisData.password, regisData.confirmpassword],(n
     }
 },{immediate:true})
 
-const getRegisData = () =>{
+const getRegisData = async() =>{
     const data = {
         username: regisData.username,
         password: regisData.password
     }
-    console.log(data)
+
+    await serviceStore.registerService(data)
+
     router.push({
         name:'login'
     })

@@ -1,13 +1,18 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import mongoose, { Schema } from 'mongoose'
+import mongoose from 'mongoose'
+import cors from 'cors'
+
 
 
 const app = express()
 const port = 8000
 
 app.use(express.json())
+app.use(cors({
+    origin: 'http://localhost:5173'
+}))
 
 const uri = "mongodb+srv://pavatnon:drakzone123@cluster0.h12he.mongodb.net/userdatabase?retryWrites=true&w=majority"
 
@@ -25,10 +30,60 @@ const connectiondb = async()=>{
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    role:{ type: String, require: true}
 });
 
 const User = mongoose.model('useraccoutdatas', userSchema)
+
+
+const authenticationAdmin = (req, res, next)=>{
+    const authHeader = req.headers.authorization
+
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Authorization header is missing' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'Token is missing' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, secret);
+
+        if (decoded.role !== 'admin') {
+            return res.status(403).json({ message: 'Access denied: Admins only' });
+        }
+
+        req.user = decoded;
+        next();
+
+    } catch (error) {
+        console.log(error);
+        return res.status(403).json({ message: 'Invalid token or access denied' });
+    }
+}
+const authAllUser = (req, res, next) =>{
+    const authHeader = req.headers.authorization
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Authorization header is missing' });
+    }
+    const token = authHeader.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'Token is missing' });
+    }
+    try {
+        const decoded = jwt.verify(token, secret);
+        req.user = decoded;
+        next();
+
+    } catch (error) {
+        console.log(error);
+        return res.status(403).json({ message: 'Invalid token or access denied' });
+    }
+
+}
 
 app.post('/register', async (req, res) =>{
     try{
@@ -49,7 +104,8 @@ app.post('/register', async (req, res) =>{
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = new User({
             username,
-            password: hashedPassword
+            password: hashedPassword,
+            role: 'user'
         })
         await newUser.save()
     
@@ -89,11 +145,14 @@ app.post('/login', async(req, res) =>{
                 message: 'password is wrong!'
             })
        }
+       
+       const userRole = getuserData.role
 
-       const token = jwt.sign({ userId: getuserData._id }, secret, { expiresIn: '1h' });
+       const token = jwt.sign({ userId: getuserData._id, role:userRole }, secret, { expiresIn: '1h' });
 
        res.json({
-            token
+            token,
+            role: userRole
        })
        
        
@@ -105,6 +164,32 @@ app.post('/login', async(req, res) =>{
 
 
 })
+
+app.get('/loadAll', authenticationAdmin, async(req, res) =>{
+    try {
+        const userData = await User.find()
+        res.json({
+            userData
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ message: 'Server error' });
+    }
+})
+app.get('/loadSelf', authAllUser, async(req, res) =>{
+    try {
+        const userData  = await User.findById(req.user.userId)
+        if(!userData){
+            return res.status(404).json({ message: 'User not found' })
+        }
+        res.json({
+            userData
+        })
+    }catch(error){
+        console.log(error.message)
+        res.status(500).json({ message: 'Server error' });
+    }
+})  
 
 
 

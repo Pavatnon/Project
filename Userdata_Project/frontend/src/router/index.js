@@ -14,6 +14,11 @@ const router = createRouter({
       component: () => import('@/views/RegisterView.vue')
     },
     {
+      path: '/home',
+      name: 'home',
+      component: () => import('@/views/HomeView.vue')
+    },
+    {
       path: '/userdata',
       name: 'userdata',
       component: () => import('@/views/ShowDataView.vue')
